@@ -1,14 +1,15 @@
-{ lib, stdenv, fetchFromGitHub, kernel, linuxHeaders, pahole }:
+{ lib, stdenv, fetchFromGitLab, kernel, linuxHeaders, pahole }:
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "tuxedo-keyboard-${kernel.version}";
-  version = "3.2.14";
+  version = "4.6.0";
 
-  src = fetchFromGitHub {
-    owner = "tuxedocomputers";
+  src = fetchFromGitLab {
+    group = "tuxedocomputers";
+    owner = "packages";
     repo = "tuxedo-keyboard";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-L3NsUUKA/snUcRWwlZidsBiTznhfulNldidEDDmNOkw=";
+    hash = "";
   };
 
   buildInputs = [
