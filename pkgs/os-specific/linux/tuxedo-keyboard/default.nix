@@ -24,9 +24,8 @@ stdenv.mkDerivation (finalAttrs: {
 
     mkdir -p "$out/lib/modules/${kernel.modDirVersion}"
 
-    for module in clevo_acpi.ko clevo_wmi.ko tuxedo_keyboard.ko tuxedo_io/tuxedo_io.ko uniwill_wmi.ko; do
-        mv src/$module $out/lib/modules/${kernel.modDirVersion}
-    done
+    find src/ -type f -name '*.ko' \
+      -exec mv {} $out/lib/modules/${kernel.modDirVersion} \;
 
     runHook postInstall
   '';
