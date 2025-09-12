@@ -139,6 +139,15 @@ in
       '';
     };
 
+    rootImage = mkOption {
+      type = types.package;
+      default = rootfsImage;
+      description = ''
+        The finished root partition image with all custom fileystem modifications.
+        This is sometimes needed then you need to override the filesystem creator itself.
+      '';
+    };
+
     firmwareSize = mkOption {
       type = types.int;
       # As of 2019-08-18 the Raspberry pi firmware + u-boot takes ~18MiB
@@ -265,11 +274,11 @@ in
             echo "file sd-image $img" >> $out/nix-support/hydra-build-products
           fi
 
-          root_fs=${rootfsImage}
+          root_fs=${config.sdImage.rootImage}
           ${lib.optionalString config.sdImage.compressImage ''
             root_fs=./root-fs.img
             echo "Decompressing rootfs image"
-            zstd -d --no-progress "${rootfsImage}" -o $root_fs
+            zstd -d --no-progress "${config.sdImage.rootImage}" -o $root_fs
           ''}
 
           # Gap in front of the first partition, in MiB
